@@ -6,6 +6,11 @@
 	width: 95vw;
 	height: 95vh;
 }
+/* .boardGame {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+} */
 #rouge{
 	grid-column: 1 / span 1;
 	grid-row: 1 / span 1;	
@@ -32,8 +37,31 @@ img{
 }
 #number {
 	grid-column: 1 / span 1;
-	grid-row: 5 / span 2;	
+	grid-row: 3 / span 7;	
 }
 #number > div {
 	display:none;
+}
+.boardBox {
+    border: 1px solid black;
+    background-color: white;
+    color: white;
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+.boardBox--empty {
+    border: none;
+}
+.boardBox--black {
+    border: 3px solid black;
+    background-color: black;
+}
+.boardBox--red {
+    border: 2px solid red;
+    background-color: red;
+}
+.boardBox--green {
+    border: 2px solid green;
+    background-color: green;
 }
