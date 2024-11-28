@@ -44,10 +44,10 @@ butVert.addEventListener("click", (Event) => {
 });
 
 
-/** FONCTIONS */
+/**** FONCTIONS ****/
 
+/** obtention d'un nombre alea 1-6 et affichage du dé correspondant */
 function rollDice(min, max) {
-    /** obtention d'un nombre alea 1-6 et affichage du dé correspondant */
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
@@ -63,39 +63,61 @@ function drawDice() {
     return dieRolled;
 }
 
+/** déplacement du pion P sur N cases  */
 function movePawn(nbrMoves, pawn) {
-    /** déplacement du pion P sur N cases  */
     if(pawn === rouge) {
         rougeAdvance = rougeAdvance + nbrMoves;
-        const destination = document.getElementById(rougeAdvance);
-        $(pawn).appendTo(destination);
-        console.log(`rouge = ${rougeAdvance}`)
+        if (rougeAdvance < 54) {
+            const destination = document.getElementById(rougeAdvance);
+            $(pawn).appendTo(destination);
+            console.log(`rouge = ${rougeAdvance}`)
+        } else if () {
+
+        } else {
+            const destination = document.getElementById(54);
+            $(pawn).appendTo(destination);
+            hasWon("red");
+        }
     } else {
         vertAdvance = vertAdvance + nbrMoves;
-        const destination = document.getElementById(vertAdvance);
-        $(pawn).appendTo(destination);
-        console.log(`vert =${vertAdvance}`)
+        if (vertAdvance < 54) {
+            const destination = document.getElementById(vertAdvance);
+            $(pawn).appendTo(destination);
+            console.log(`vert =${vertAdvance}`)
+        } else if () {
+
+        } else {
+            const destination = document.getElementById(54);
+            $(pawn).appendTo(destination);
+            hasWon("vert");
+        }
+    } 
+}
+
+/** retour du pion à la case départ */
+function resetPawn(pawn) {
+    const destination = document.getElementById(1);
+    $(pawn).appendTo(destination);
+    alert("Oh, non ! Retour à la case départ !");
+}
+
+/** indique la victoire et fin de partie */
+function hasWon(redOrGreenString) {
+    if(redOrGreenString === "red") {
+        alert("Victoire de Rouge !");
+    } else {
+        alert("Victoire de Vert !");
     }
-    
-    
 }
 
-function resetPawn() {
-    /** retour du pion à la case départ */
-}
-
-function hasWon() {
-    /** indique la victoire et fin de partie */
-}
-
+/** débloque les boutons d'action et affiche le plateau de jeu */
 function start() {
-    /** débloque les boutons d'action et affiche le plateau de jeu */
     drawBoard(board);
     placeBoard(board);
 }
 
+/** détermine à qui est-ce de jouer */
 function giveTurn() {
-    /** détermine à qui est-ce de jouer */
     var alea = rollDice(1,2);
     if (alea === 1) {
         butRouge.disabled = false;
@@ -104,13 +126,11 @@ function giveTurn() {
         butRouge.disabled = true;
         butVert.disabled = false;
     }
-
 }
 
 
-
+/** création des cases du plateau de jeu */
 function drawBoard(board) {
-    /** création des cases du plateau de jeu */
     var caseId = 1;
     // const container = document.getElementById("container");
     board.forEach((line)=> {
@@ -147,9 +167,8 @@ function drawBoard(board) {
 }
 
 
-
+/** création des cases du plateau de jeu */
 function placeBoard(board) {
-    /** création des cases du plateau de jeu */
     const container = document.getElementById("container");
     var line = 0;
     var col = 1;
@@ -158,6 +177,7 @@ function placeBoard(board) {
     placeCases(line, col, targetId, modificator, board);
 }
 
+/**déplace des cases sur une grille en partant de la première "line" et première "col" en parcourant la matrice  */
 function placeCases(line, col, targetId, modificator, board) {
     if(targetId < 54) {
         while(col <= board[line].length- modificator) {
