@@ -10,12 +10,7 @@ const board = [
     ["x"," "," "," "," "," "," "," "," ","x"],
     ["B","x","x","x","R","G","x","x","x","B"],
 ]
-// const container = document.getElementById("container");
-// const cell = document.createElement("div");
-// cell.dataRow = 1;
-// cell.dataCol = 2;
-// cell.classList.add("boardBox");
-// container.appendChild(cell);
+
 
 
 const rouge = $("#rouge img");
@@ -53,7 +48,7 @@ function rollDice(min, max) {
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-// !!!!! TODO display none pour tous les autres dés
+
 function drawDice() {
     var dieRolled = rollDice(1,6)
     var diceId = dieRolled.toString();
@@ -63,16 +58,53 @@ function drawDice() {
     return dieRolled;
 }
 
+function displacePawn(advance, pawn) {
+    const destination = document.getElementById(advance);
+    $(pawn).appendTo(destination);
+    return destination;
+}
+
+/** selon case de destination, déclenchement éventuel d'un mouvement du pion */
+function checkPosition(pawn, destination) {
+    if (pawn === rouge) {
+        if (destination.classList.contains("boardBox--black")) {
+            rougeAdvance = 1;
+            displacePawn(rougeAdvance, pawn);
+            alert("Oh, non, c'est le RESET !");
+        } else if (destination.classList.contains("boardBox--red")) {
+            rougeAdvance += 2;
+            displacePawn(rougeAdvance, pawn);
+            alert("Super, c'est le BONUS !");
+        } else if (destination.classList.contains("boardBox--green")) {
+            rougeAdvance -= 2;
+            displacePawn(rougeAdvance, pawn);
+            alert("Oh, non, c'est le MALUS !");
+        }
+    } else {
+        if (destination.classList.contains("boardBox--black")) {
+            vertAdvance = 1;
+            displacePawn(vertAdvance, pawn);
+            alert("Oh, non, c'est le RESET !");
+        } else if (destination.classList.contains("boardBox--red")) {
+            vertAdvance -= 2;
+            displacePawn(vertAdvance, pawn);
+            alert("Oh, non, c'est le MALUS !");
+        } else if (destination.classList.contains("boardBox--green")) {
+            vertAdvance += 2;
+            displacePawn(vertAdvance, pawn);
+            alert("Super, c'est le BONUS !");
+        }
+    }
+}
+
+///// BUG, les cases ne s'enchaînent pas, un Noir après R/V ne déclenche rien !
 /** déplacement du pion P sur N cases  */
 function movePawn(nbrMoves, pawn) {
     if(pawn === rouge) {
         rougeAdvance = rougeAdvance + nbrMoves;
         if (rougeAdvance < 54) {
-            const destination = document.getElementById(rougeAdvance);
-            $(pawn).appendTo(destination);
-            console.log(`rouge = ${rougeAdvance}`)
-        } else if () {
-
+            const destination = displacePawn(rougeAdvance, rouge);
+            checkPosition(rouge, destination)
         } else {
             const destination = document.getElementById(54);
             $(pawn).appendTo(destination);
@@ -81,11 +113,25 @@ function movePawn(nbrMoves, pawn) {
     } else {
         vertAdvance = vertAdvance + nbrMoves;
         if (vertAdvance < 54) {
-            const destination = document.getElementById(vertAdvance);
-            $(pawn).appendTo(destination);
+            const destination = displacePawn(vertAdvance, vert);
+            checkPosition(vert, destination);
             console.log(`vert =${vertAdvance}`)
-        } else if () {
-
+            // if (destination.classList.contains("boardBox--black")) {
+            //     vertAdvance = 1;
+            //     const destination = document.getElementById(vertAdvance);
+            //     $(pawn).appendTo(destination);
+            //     console.log("RESET !");
+            // } else if(destination.classList.contains("boardBox--green")) {
+            //     vertAdvance += 2
+            //     const destination = document.getElementById(vertAdvance);
+            //     $(pawn).appendTo(destination);
+            //     console.log("BONUS !");
+            // } else if(destination.classList.contains("boardBox--red")) {
+            //     vertAdvance -= 2
+            //     const destination = document.getElementById(vertAdvance);
+            //     $(pawn).appendTo(destination);
+            //     console.log("MALUS !");
+            // }
         } else {
             const destination = document.getElementById(54);
             $(pawn).appendTo(destination);
