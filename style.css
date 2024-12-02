@@ -48,10 +48,19 @@ img{
     color: white;
     height: 100%;
     width: 100%;
-    display: block;
+    display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.2));
+	background-clip: padding-box;
+	border-radius: 4px;
+	box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.15), inset 0px 1px 2px -1px rgba(255,255,255,0.5), 0px 1px 2px -1px rgba(0,0,0,0.9), 3px 3px 6px rgba(0,0,0,0.35);
+	transition: background-color 0.5s;
 }
 .boardBox--empty {
     border: none;
+	display: none;
 }
 .boardBox--black {
     border: 3px solid black;
@@ -64,4 +73,7 @@ img{
 .boardBox--green {
     border: 2px solid green;
     background-color: green;
+}
+.boardBox:hover {
+	background-color: hsla(30, 90%, 40%, 0.25);
 }

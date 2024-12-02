@@ -61,7 +61,19 @@ function drawDice() {
 function displacePawn(advance, pawn) {
     const destination = document.getElementById(advance);
     $(pawn).appendTo(destination);
+    checkIdem();
     return destination;
+}
+
+function checkIdem() {
+    if(rougeAdvance === vertAdvance) {
+        var injustice = rollDice(1,2);
+        if (injustice === 1) {
+            movePawn(1, rouge);
+        } else {
+            movePawn(1, vert);
+        }
+    }
 }
 
 /** selon case de destination, déclenchement éventuel d'un mouvement du pion */
@@ -79,6 +91,10 @@ function checkPosition(pawn, destination) {
             rougeAdvance -= 2;
             displacePawn(rougeAdvance, pawn);
             alert("Oh, non, c'est le MALUS !");
+        } else if (vertAdvance === rougeAdvance) {
+            // rougeAdvance += 2;
+            // displacePawn(rougeAdvance, pawn);
+            alert("Joli, on double !");
         }
     } else {
         if (destination.classList.contains("boardBox--black")) {
@@ -93,8 +109,13 @@ function checkPosition(pawn, destination) {
             vertAdvance += 2;
             displacePawn(vertAdvance, pawn);
             alert("Super, c'est le BONUS !");
+        } else if (vertAdvance === rougeAdvance) {
+            // vertAdvance += 2;
+            // displacePawn(vertAdvance, pawn);
+            alert("Joli, on double !");
         }
     }
+    
 }
 
 ///// BUG, les cases ne s'enchaînent pas, un Noir après R/V ne déclenche rien !
