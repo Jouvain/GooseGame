@@ -30,6 +30,7 @@ butRouge.addEventListener("click", (Event) => {
     butVert.disabled = false;
     movePawn(nbr, rouge,  rougeAdvance);
 });
+butRouge.disabled = true;
 const butVert = document.getElementById("butVert");
 butVert.addEventListener("click", (Event) => {
     var nbr = drawDice();
@@ -37,6 +38,7 @@ butVert.addEventListener("click", (Event) => {
     butVert.disabled = true;
     movePawn(nbr, vert,  vertAdvance);
 });
+butVert.disabled = true;
 
 
 /**** FONCTIONS ****/
@@ -181,6 +183,23 @@ function hasWon(redOrGreenString) {
 function start() {
     drawBoard(board);
     placeBoard(board);
+    displayResetButton();
+}
+
+/**création du bouton de reset à la place du starter */
+function displayResetButton() {
+    butStart.style.display = "none";
+    const resetButton = document.createElement("button");
+    resetButton.classList.add("btn");
+    resetButton.classList.add("btn-primary");
+    resetButton.value = "Recommencer";
+    resetButton.innerText = "Recommencer";
+    resetButton.id = "resetButton";
+    const buttonContainer = document.getElementById("divButStart");
+    buttonContainer.appendChild(resetButton);
+    resetButton.addEventListener("click", ()=> {
+        resetAll();
+    })
 }
 
 /** détermine à qui est-ce de jouer */
@@ -289,8 +308,24 @@ function placeCases(line, col, targetId, modificator, board) {
        modificator +=1;
        placeCases(line, col, targetId, modificator, board)
     }
+}
 
- 
+/** réinitialise le jeu (plateau, pions, boutons...) */
+function resetAll() {
+    var destination = document.getElementById("rouge");
+    $(rouge).appendTo(destination);
+    rougeAdvance = 0;
+    destination = document.getElementById("vert");
+    $(vert).appendTo(destination);
+    vertAdvance = 0;
+    $("#resetButton").remove();
+    butStart.style.display = "flex";
+    $("#number").children().hide();
+    for (let i = 1 ; i<55 ; i++ ){
+        $(`#${i}`).remove();
+    }
+    butRouge.disabled = true;
+    butVert.disabled = true;
 }
 
 
