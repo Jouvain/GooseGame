@@ -26,14 +26,17 @@ img{
 #divButRouge{
 	grid-column: 1 / span 1;
 	grid-row: 10 / span 1;
+	padding: 20%;
 }
 #divButVert{
 	grid-column: 11 / span 1;
 	grid-row: 10 / span 1;
+	padding: 20%;
 }
 #divButStart{
 	grid-column: 6 / span 1;
 	grid-row: 10 / span 1;
+	padding: 20%;
 }
 #number {
 	grid-column: 1 / span 1;
