@@ -1,14 +1,14 @@
 
 const board = [
-    ["x","x","x","x","R","G","x","x","x","B"],
+    ["x","x","x","x","x","x","x","x","x","x"],
     [" "," "," "," "," "," "," "," "," ","x"],
-    ["B","x","x","x","R","G","x","B"," ","x"],
+    ["x","x","x","x","x","x","x","x"," ","x"],
     ["x"," "," "," "," "," "," ","x"," ","x"],
-    ["x"," ","B","x","x","x"," ","x"," ","x"],
+    ["x"," ","x","x","x","x"," ","x"," ","x"],
     ["x"," ","x"," "," "," "," ","x"," ","x"],
-    ["x"," ","B","x","x","x","x","B"," ","x"],
+    ["x"," ","x","x","x","x","x","x"," ","x"],
     ["x"," "," "," "," "," "," "," "," ","x"],
-    ["B","x","x","x","R","G","x","x","x","B"],
+    ["x","x","x","x","x","x","x","x","x","x"],
 ]
 
 
@@ -173,10 +173,11 @@ function resetPawn(pawn) {
 /** indique la victoire et fin de partie */
 function hasWon(redOrGreenString) {
     if(redOrGreenString === "red") {
-        alert("Victoire de Rouge !");
+        displayAnimatedModal("<h1>Victoire de Jeanne !<h1>");
     } else {
-        alert("Victoire de Vert !");
+        displayAnimatedModal("<h1>Oh... Arthur l'emporte cette fois...<h1>");
     }
+    resetAll();
 }
 
 /** débloque les boutons d'action et affiche le plateau de jeu */
@@ -184,6 +185,17 @@ function start() {
     drawBoard(board);
     placeBoard(board);
     displayResetButton();
+    console.log($("#modalAnimation"))
+    displayAnimatedModal("<h1>Que Dame Fortune aime votre victoire !<h1>");
+}
+
+function displayAnimatedModal(message) {
+    $("#modalAnimation").addClass("animateModal");
+    $("#modalAnimation").append(message);
+    setTimeout (()=> {
+        $("#modalAnimation").removeClass("animateModal");
+        $("#modalAnimation h1").remove();
+    }, "5000");
 }
 
 /**création du bouton de reset à la place du starter */
