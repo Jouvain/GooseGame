@@ -1,14 +1,14 @@
 
 const board = [
-    ["x","x","x","x","x","x","x","x","x","x"],
+    ["x","x","G","x","x","x","x","x","x","R"],
     [" "," "," "," "," "," "," "," "," ","x"],
     ["x","x","x","x","x","x","x","x"," ","x"],
-    ["x"," "," "," "," "," "," ","x"," ","x"],
-    ["x"," ","x","x","x","x"," ","x"," ","x"],
+    ["G"," "," "," "," "," "," ","B"," ","x"],
+    ["x"," ","x","x","x","x"," ","x"," ","B"],
     ["x"," ","x"," "," "," "," ","x"," ","x"],
     ["x"," ","x","x","x","x","x","x"," ","x"],
     ["x"," "," "," "," "," "," "," "," ","x"],
-    ["x","x","x","x","x","x","x","x","x","x"],
+    ["B","x","x","x","R","x","x","x","x","x"],
 ]
 
 
@@ -95,15 +95,15 @@ function checkPosition(pawn, destination) {
         if (destination.classList.contains("boardBox--black")) {
             rougeAdvance = 1;
             displacePawn(rougeAdvance, pawn);
-            alert("Oh, non, c'est le RESET !");
+            displayAnimatedModal("<h1>RETROCEDERE !</h1>")
         } else if (destination.classList.contains("boardBox--red")) {
             rougeAdvance += 2;
             displacePawn(rougeAdvance, pawn);
-            alert("Super, c'est le BONUS !");
+            displayAnimatedModal("<h1>Courage, vas-y !</h1>")
         } else if (destination.classList.contains("boardBox--green")) {
             rougeAdvance -= 2;
             displacePawn(rougeAdvance, pawn);
-            alert("Oh, non, c'est le MALUS !");
+            displayAnimatedModal("<h1>Oh, non !</h1>")
         } else if (vertAdvance === rougeAdvance) {
             // rougeAdvance += 2;
             // displacePawn(rougeAdvance, pawn);
@@ -113,15 +113,15 @@ function checkPosition(pawn, destination) {
         if (destination.classList.contains("boardBox--black")) {
             vertAdvance = 1;
             displacePawn(vertAdvance, pawn);
-            alert("Oh, non, c'est le RESET !");
+            displayAnimatedModal("<h1>RETROCEDERE !</h1>")
         } else if (destination.classList.contains("boardBox--red")) {
             vertAdvance -= 2;
             displacePawn(vertAdvance, pawn);
-            alert("Oh, non, c'est le MALUS !");
+            displayAnimatedModal("<h1>Oh, non !</h1>")
         } else if (destination.classList.contains("boardBox--green")) {
             vertAdvance += 2;
             displacePawn(vertAdvance, pawn);
-            alert("Super, c'est le BONUS !");
+            displayAnimatedModal("<h1>Courage, vas-y !</h1>")
         } else if (vertAdvance === rougeAdvance) {
             // vertAdvance += 2;
             // displacePawn(vertAdvance, pawn);
@@ -138,22 +138,29 @@ function movePawn(nbrMoves, pawn) {
         rougeAdvance = rougeAdvance + nbrMoves;
         if (rougeAdvance < 54) {
             const destination = displacePawn(rougeAdvance, rouge);
-            checkPosition(rouge, destination)
+            setTimeout(()=> {
+                checkPosition(rouge, destination)
+            }, "500");  
         } else {
             const destination = document.getElementById(54);
             $(pawn).appendTo(destination);
-            hasWon("red");
+            setTimeout(()=> {
+                hasWon("red");
+            }, "500");   
         }
     } else {
         vertAdvance = vertAdvance + nbrMoves;
         if (vertAdvance < 54) {
             const destination = displacePawn(vertAdvance, vert);
-            checkPosition(vert, destination);
-            console.log(`vert =${vertAdvance}`)
+            setTimeout(()=> {
+                checkPosition(vert, destination)
+            }, "500");
         } else {
             const destination = document.getElementById(54);
             $(pawn).appendTo(destination);
-            hasWon("vert");
+            setTimeout(()=> {
+                hasWon("vert");
+            }, "500");  
         }
     } 
 }
@@ -200,7 +207,7 @@ function displayAnimatedModal(message) {
     setTimeout (()=> {
         $("#modalAnimation").removeClass("animateModal");
         $("#modalAnimation h1").remove();
-    }, "5000");
+    }, "3000");
 }
 
 /**création du bouton de reset à la place du starter */
@@ -355,4 +362,66 @@ function resetAll() {
     butVert.disabled = true;
 }
 
+
+/*********** ANIMATIONS CODEPEN *******************/
+let par = [];
+let colors = ['#f25f5c', '#ffe066', '#247ba0', '#70c1b3'];
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+  blendMode(BLEND);
+  background(30);
+  blendMode(ADD);
+  
+  let p;
+  if(mouseX === 0 && mouseY === 0){
+    p = new Particle(width/2, height/2);
+  } else {
+    p = new Particle(mouseX, mouseY);
+  }
+  par.push(p);
+  
+  for(let i = par.length - 1;i> 0; i--){
+    par[i].update();
+    par[i].show();
+    
+    if(par[i].size < 1){
+      par.splice(i,1);
+    }
+  }
+}
+
+class Particle {
+  constructor(x,y){
+    this.pos = createVector(x,y);
+    this.vel = p5.Vector.random2D().setMag(0.1);
+    this.acc = p5.Vector.random2D().setMag(0.3);
+    
+    this.size = 100;
+    this.color = colors[Math.floor(random(colors.length))];
+  }
+  
+  show(){
+    noStroke();
+    push();
+    translate(this.pos.x, this.pos.y);
+    fill(this.color);
+    
+	drawingContext.shadowColor = color(this.color);
+	drawingContext.shadowBlur = 20;
+    
+    ellipse(0,0,this.size);
+    pop();
+  }
+  
+  update(){
+    this.size = 0.98 * this.size;
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.vel.limit(2);
+  }
+}
 
