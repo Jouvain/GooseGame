@@ -61,8 +61,19 @@ function drawDice() {
 }
 
 function displacePawn(advance, pawn) {
+    const currentPosition = $(pawn).position();
     const destination = document.getElementById(advance);
-    $(pawn).appendTo(destination);
+    const destinationRect = destination.getBoundingClientRect();
+    console.log(destinationRect);
+    const destinationX = destinationRect.left;
+    const destinationY = destinationRect.top;
+    $(pawn).css({
+        left: destinationX + 30 + "px",
+        top: destinationY + 5 + "px"
+    });
+    setTimeout(()=> {
+        $(pawn).appendTo(destination);
+    }, "800")
     checkIdem();
     return destination;
 }
@@ -139,22 +150,6 @@ function movePawn(nbrMoves, pawn) {
             const destination = displacePawn(vertAdvance, vert);
             checkPosition(vert, destination);
             console.log(`vert =${vertAdvance}`)
-            // if (destination.classList.contains("boardBox--black")) {
-            //     vertAdvance = 1;
-            //     const destination = document.getElementById(vertAdvance);
-            //     $(pawn).appendTo(destination);
-            //     console.log("RESET !");
-            // } else if(destination.classList.contains("boardBox--green")) {
-            //     vertAdvance += 2
-            //     const destination = document.getElementById(vertAdvance);
-            //     $(pawn).appendTo(destination);
-            //     console.log("BONUS !");
-            // } else if(destination.classList.contains("boardBox--red")) {
-            //     vertAdvance -= 2
-            //     const destination = document.getElementById(vertAdvance);
-            //     $(pawn).appendTo(destination);
-            //     console.log("MALUS !");
-            // }
         } else {
             const destination = document.getElementById(54);
             $(pawn).appendTo(destination);
@@ -187,6 +182,16 @@ function start() {
     displayResetButton();
     console.log($("#modalAnimation"))
     displayAnimatedModal("<h1>Que Dame Fortune aime votre victoire !<h1>");
+    $(rouge).addClass("pawn");
+    $(vert).addClass("pawn");
+    $(rouge).css({
+        left: 0 + "px",
+        top: 0 + "px"
+    })
+    $(vert).css({
+        left: 0 + "px",
+        top: 100 + "px"
+    })
 }
 
 function displayAnimatedModal(message) {
@@ -325,9 +330,19 @@ function placeCases(line, col, targetId, modificator, board) {
 /** réinitialise le jeu (plateau, pions, boutons...) */
 function resetAll() {
     var destination = document.getElementById("rouge");
+    $(rouge).css({
+        left: 0 + "px",
+        top: 0 + "px"
+    })
+    $(rouge).removeClass("pawn");
     $(rouge).appendTo(destination);
     rougeAdvance = 0;
     destination = document.getElementById("vert");
+    $(vert).css({
+        left: 0 + "px",
+        top: 100 + "px"
+    })
+    $(vert).removeClass("pawn");
     $(vert).appendTo(destination);
     vertAdvance = 0;
     $("#resetButton").remove();
